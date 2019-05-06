@@ -9,9 +9,17 @@
 import XCTest
 @testable import ToDoApp
 class TaskCellTests: XCTestCase {
-
+    var cell: TaskCell!
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: String(describing: TaskListViewController.self)) as! TaskListViewController
+        controller.loadViewIfNeeded()
+        
+        let tableView = controller.tableView
+        let dataSource = FakeDataSource()
+        tableView?.dataSource = dataSource
+        
+        cell = tableView?.dequeueReusableCell(withIdentifier: String(describing: TaskCell.self), for: IndexPath(row: 0, section: 0)) as? TaskCell
     }
 
     override func tearDown() {
@@ -19,30 +27,12 @@ class TaskCellTests: XCTestCase {
     }
 
     func testCellHasTitleLable() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: String(describing: TaskListViewController.self)) as! TaskListViewController
-        controller.loadViewIfNeeded()
-        
-        let tableView = controller.tableView
-        let dataSource = FakeDataSource()
-        tableView?.dataSource = dataSource
-        
-        let cell = tableView?.dequeueReusableCell(withIdentifier: String(describing: TaskCell.self), for: IndexPath(row: 0, section: 0)) as! TaskCell
         
         XCTAssertNotNil(cell.titleLabel)
     }
 
     func testCellHasTitleLabelInContentView() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: String(describing: TaskListViewController.self)) as! TaskListViewController
-        controller.loadViewIfNeeded()
-        
-        let tableView = controller.tableView
-        let dataSource = FakeDataSource()
-        tableView?.dataSource = dataSource
-        
-        let cell = tableView?.dequeueReusableCell(withIdentifier: String(describing: TaskCell.self), for: IndexPath(row: 0, section: 0)) as! TaskCell
-        
+       
         XCTAssertTrue(cell.titleLabel.isDescendant(of: cell.contentView))
     }
     
